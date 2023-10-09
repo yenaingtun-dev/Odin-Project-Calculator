@@ -18,17 +18,10 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 function calculateKeyDown(e) {
     if (isNumber(e)) {
         if (opreator) {
-            if (firstNumber !== '') {
-                secondNumber += e
-            } else {
-                firstNumber = result + firstNumber;
-                alert('heree3');
-                result = '';
-            }
+            secondNumber += e
         } else {
             if (result !== '') {
                 firstNumber = result + firstNumber;
-                alert('heree2');
                 result = '';
             }
             firstNumber += e;
@@ -39,7 +32,6 @@ function calculateKeyDown(e) {
         }
         if (firstNumber == '') {
             firstNumber = result + firstNumber;
-            alert('heree');
             result = '';
         }
     } else if (e == '=' || e == 'Enter') {
@@ -115,11 +107,13 @@ function calculate(e, button) {
             firstNumber = '';
             secondNumber = '';
             opreator = '';
-        } else {
+        } else if (e.target.id === 'clear') {
             firstNumber = '';
             secondNumber = '';
             opreator = '';
             result = '';
+        } else {
+            console.log('idk');
         }
         if (result) {
             document.getElementById('show').innerText = result;
