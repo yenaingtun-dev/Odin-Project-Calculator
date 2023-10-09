@@ -18,16 +18,30 @@ function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 function calculateKeyDown(e) {
     if (isNumber(e)) {
         if (opreator) {
-            secondNumber += e;
+            if (firstNumber !== '') {
+                secondNumber += e
+            } else {
+                firstNumber = result + firstNumber;
+                alert('heree3');
+                result = '';
+            }
         } else {
             if (result !== '') {
                 firstNumber = result + firstNumber;
+                alert('heree2');
                 result = '';
             }
             firstNumber += e;
         }
     } else if(e == '+' || e == '*' || e == '/' || e == '-') {
-        opreator = e;
+        if (firstNumber !== '0') {
+            opreator = e;
+        }
+        if (firstNumber == '') {
+            firstNumber = result + firstNumber;
+            alert('heree');
+            result = '';
+        }
     } else if (e == '=' || e == 'Enter') {
         if (firstNumber !== null && opreator !== null && secondNumber !== null) {
             if (opreator == '+') {
@@ -48,10 +62,10 @@ function calculateKeyDown(e) {
     } else {
         console.log('isnotanumber');
     }
-    console.log('first ' + firstNumber);
-    console.log('opreator ' + opreator);
-    console.log('second ' + secondNumber);
-    console.log('result ' + result);
+    // console.log('first ' + firstNumber);
+    // console.log('opreator ' + opreator);
+    // console.log('second ' + secondNumber);
+    // console.log('result ' + result);
     if (result) {
         document.getElementById('show').innerText = result;
     } else {
@@ -61,11 +75,6 @@ function calculateKeyDown(e) {
 
 // calculate with button click
 function calculate(e, button) {
-        // clear result
-        // if (result) {
-        //     firstNumber = '';
-        //     secondNumber = '';
-        // }
         if (e.target.id === "number") {
             if (opreator) {
                 if (firstNumber !== '') {
@@ -117,8 +126,8 @@ function calculate(e, button) {
         } else {
             document.getElementById('show').innerText = Number(firstNumber) + ' ' + opreator + ' ' + secondNumber;
         }
-        console.log('first ' + firstNumber);
-        console.log('opreator ' + opreator);
-        console.log('second ' + secondNumber);
-        console.log('result ' + result);
+        // console.log('first ' + firstNumber);
+        // console.log('opreator ' + opreator);
+        // console.log('second ' + secondNumber);
+        // console.log('result ' + result);
 }
