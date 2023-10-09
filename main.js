@@ -14,22 +14,27 @@ window.addEventListener("keydown", (e) => {
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
+// calculate with keyboard
 function calculateKeyDown(e) {
     if (isNumber(e)) {
         if (opreator) {
             secondNumber += e;
         } else {
+            if (result !== '') {
+                firstNumber = result + firstNumber;
+                result = '';
+            }
             firstNumber += e;
         }
     } else if(e == '+' || e == '*' || e == '/' || e == '-') {
-        opreator = e
+        opreator = e;
     } else if (e == '=' || e == 'Enter') {
         if (firstNumber !== null && opreator !== null && secondNumber !== null) {
             if (opreator == '+') {
                 result = Number(firstNumber) + Number(secondNumber);
             } else if (opreator == '-') {
                 result = Number(firstNumber) - Number(secondNumber);
-            } else if (opreator == '*') {
+            } else if (opreator == '*' || opreator == 'x') {
                 result = Number(firstNumber) * Number(secondNumber);
             } else if (opreator == '/') {
                 result = Number(firstNumber) / Number(secondNumber);
@@ -37,6 +42,9 @@ function calculateKeyDown(e) {
                 console.log('idk');
             }
         }
+        firstNumber = '';
+        secondNumber = '';
+        opreator = '';
     } else {
         console.log('isnotanumber');
     }
@@ -44,32 +52,44 @@ function calculateKeyDown(e) {
     console.log('opreator ' + opreator);
     console.log('second ' + secondNumber);
     console.log('result ' + result);
+    if (result) {
+        document.getElementById('show').innerText = result;
+    } else {
+        document.getElementById('show').innerText = Number(firstNumber) + ' ' + opreator + ' ' + secondNumber;
+    }
 }
 
+// calculate with button click
 function calculate(e, button) {
         // clear result
-        if (result) {
-            firstNumber = '';
-            secondNumber = '';
-        }
+        // if (result) {
+        //     firstNumber = '';
+        //     secondNumber = '';
+        // }
         if (e.target.id === "number") {
-            // check if number
             if (opreator) {
-                // assign second number
-                secondNumber += button.textContent
+                if (firstNumber !== '') {
+                    secondNumber += button.textContent
+                } else {
+                    firstNumber = result + firstNumber;
+                    result = '';
+                }
             } else {
-                // assign first number
+                if (result !== '') {
+                    firstNumber = result + firstNumber;
+                    result = '';
+                }
                 firstNumber += button.textContent;
             }
         } else if (e.target.id === 'opreator') {
-            // assign opreator
-            if (result !== '') {
-                firstNumber = result;
+            if (firstNumber !== '0') {
+                opreator = button.textContent;
+            }
+            if (firstNumber == '') {
+                firstNumber = result + firstNumber;
                 result = '';
             }
-            opreator = button.textContent;
         } else if (e.target.id === 'calculate') {
-            // check nothing is null and calculate by it opreator
             if (firstNumber !== null && opreator !== null && secondNumber !== null) {
                 if (opreator == '+') {
                     result = Number(firstNumber) + Number(secondNumber);
@@ -95,7 +115,7 @@ function calculate(e, button) {
         if (result) {
             document.getElementById('show').innerText = result;
         } else {
-            document.getElementById('show').innerText = firstNumber + ' ' + opreator + ' ' + secondNumber;
+            document.getElementById('show').innerText = Number(firstNumber) + ' ' + opreator + ' ' + secondNumber;
         }
         console.log('first ' + firstNumber);
         console.log('opreator ' + opreator);
